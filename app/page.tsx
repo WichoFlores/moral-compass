@@ -5,16 +5,30 @@ import { VT323 } from 'next/font/google'
 import Image from 'next/image'
 import { useEffect, useState } from 'react';
 import { TypeAnimation } from 'react-type-animation';
-import { scenarios } from './utils/scenarios';
+import { englishToSpanishMap, scenarios } from './utils/scenarios';
 
 const vtFont = VT323({ weight: "400", subsets: ['latin'] })
 
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+
 export default function Home() {
-  const maxElements = 3;
+  const maxElements = 10;
   const [visitedScenarios, setVisitedScenarios] = useState<number[]>([]);
   const [currentScenario, setCurrentScenario] = useState<number | null>(null);
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [scenarioState, setScenarioState] = useState({
+    compassion: 0,
+    justice: 0,
+    pragmatism: 0,
+    honor: 0,
+    integrity: 0,
+    fairness: 0,
+    survival: 0,
+    altruism: 0,
+  })
+
 
   useEffect(() => {
     // Start at a random scenario
@@ -29,7 +43,15 @@ export default function Home() {
     }, 1500);
   };
 
-  const handlePressOption = () => {
+  const handlePressOption = (index: number) => {
+    if (currentScenario === null) return;
+
+    // Update scenario state
+    const selectedValue = scenarios[currentScenario].values[index];
+    const newScenarioState = { ...scenarioState };
+    newScenarioState[selectedValue] += 1;
+    setScenarioState(newScenarioState);
+
     if (visitedScenarios.length < maxElements) {
       setLoading(true);
       setShowOptions(false);
@@ -47,6 +69,30 @@ export default function Home() {
 
   if (currentScenario === null) {
     return null;
+  }
+
+  if (visitedScenarios.length === maxElements) {
+    const data = Object.entries(scenarioState)
+    .filter(([key, value]) => value > 0)
+    .map(([key, value]) => ({
+      subject: englishToSpanishMap[key as keyof typeof englishToSpanishMap],
+      A: value,
+      fullMark: 4,
+    }));
+
+    
+    
+    return (
+      <main className="bg-neutral-900/70 h-screen w-screen">
+        <ResponsiveContainer width="100%" height="100%">
+          <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+            <PolarGrid />
+            <PolarAngleAxis dataKey="subject" />
+            <Radar name="Mike" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+          </RadarChart>
+        </ResponsiveContainer>
+      </main>
+    )
   }
 
   return (
@@ -73,7 +119,7 @@ export default function Home() {
           </div>
           <div className={`${vtFont.className} pt-12`}>
             {showOptions && scenarios[currentScenario].options.map((option, index) => (
-              <p key={index} className='text-white hover:bg-white hover:text-neutral-900/70 sm:text-base md:text-lg md:leading-10 lg:text-3xl xl:text-5xl cursor-pointer w-max p-2 max-w-fit' onClick={() => handlePressOption()}>
+              <p key={index} className='text-white hover:bg-white hover:text-neutral-900/70 sm:text-base md:text-lg md:leading-10 lg:text-3xl xl:text-5xl cursor-pointer w-max p-2 max-w-fit' onClick={() => handlePressOption(index)}>
                 / {option}
               </p>
             ))}
