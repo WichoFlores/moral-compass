@@ -23,36 +23,18 @@ const defaultScenarioState = {
 }
 
 export default function Home() {
-  const maxElements = 10;
+  const maxElements = 11;
   const [visitedScenarios, setVisitedScenarios] = useState<number[]>([]);
   const [currentScenario, setCurrentScenario] = useState<number | null>(null);
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // const [scenarioState, setScenarioState] = useState(defaultScenarioState);
-
-  const [scenarioState, setScenarioState] = useState({
-    compassion: 1,
-    justice: 4,
-    pragmatism: 1,
-    honor: 1,
-    integrity: 1,
-    fairness: 1,
-    survival: 1,
-    altruism: 1,
-  })
-
+  const [scenarioState, setScenarioState] = useState(defaultScenarioState);
 
   const initialize = () => {
     const randomScenario = Math.floor(Math.random() * scenarios.length);
     setCurrentScenario(randomScenario);
     setVisitedScenarios([randomScenario]);
-  }
-
-  const reinitialize = () => {
-    setCurrentScenario(null);
-    setVisitedScenarios([]);
-    setScenarioState(defaultScenarioState);
   }
 
   const handleShowOptions = () => {
@@ -121,28 +103,26 @@ export default function Home() {
     )
   }
 
-  if (visitedScenarios.length !== maxElements) {
+  if (visitedScenarios.length === maxElements) {
 
     // Find the most selected value
     const max = Math.max(...Object.values(scenarioState));
     const mostSelectedValue = Object.keys(scenarioState).find(key => scenarioState[key as keyof typeof scenarioState] === max);
 
     const data = Object.entries(scenarioState)
-    .filter(([key, value]) => value > 0)
     .map(([key, value]) => ({
       subject: englishToSpanishMap[key as keyof typeof englishToSpanishMap],
       A: value,
       fullMark: 4,
     }));
-
     
     return (
       <main className="bg-neutral-900/70 h-screen w-screen flex flex-col items-center justify-center">
-        <div className={`${vtFont.className} flex flex-col items-center`}>
-          <h1 className='text-6xl'>{scenarioValues[mostSelectedValue as keyof typeof scenarioValues].title}</h1>
-          <p className='text-4xl'>{scenarioValues[mostSelectedValue as keyof typeof scenarioValues].description}</p>
+        <div className={`${vtFont.className} flex flex-col items-center w-4/5 text-center pt-8`}>
+          <h1 className='text-4xl'>{scenarioValues[mostSelectedValue as keyof typeof scenarioValues].title}</h1>
+          <p className='text-3xl'>{scenarioValues[mostSelectedValue as keyof typeof scenarioValues].description}</p>
         </div>
-        <div className='h-3/4'>
+        <div className='h-3/4 w-full'>
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
               <PolarGrid />
@@ -151,7 +131,6 @@ export default function Home() {
             </RadarChart>
           </ResponsiveContainer>
         </div>
-        {/* <p className='text-white hover:bg-white hover:text-neutral-900/70 text-4xl cursor-pointer w-max p-2 max-w-fit' onClick={reinitialize}>Reiniciar prueba</p> */}
       </main>
     )
   }
@@ -173,14 +152,14 @@ export default function Home() {
               sequence={[...scenarios[currentScenario].sequence, () => {handleShowOptions()}]}
               wrapper="span"
               cursor={true}
-              speed={90}
-              className='sm:text-base md:text-lg md:leading-10 lg:text-3xl lg:leading-10 xl:text-5xl xl:leading-snug'
+              speed={70}
+              className='sm:text-base md:text-lg md:leading-10 lg:text-3xl lg:leading-10 xl:text-2xl xl:leading-snug'
               style={{ display: 'inline-block', whiteSpace: 'pre-line' }}
             />}
           </div>
           <div className={`${vtFont.className} pt-12`}>
             {showOptions && scenarios[currentScenario].options.map((option, index) => (
-              <p key={index} className='text-white hover:bg-white hover:text-neutral-900/70 sm:text-base md:text-lg md:leading-10 lg:text-3xl xl:text-5xl cursor-pointer w-max p-2 max-w-fit' onClick={() => handlePressOption(index)}>
+              <p key={index} className='text-white hover:bg-white hover:text-neutral-900/70 sm:text-base md:text-lg md:leading-10 lg:text-3xl xl:text-2xl cursor-pointer w-max p-2 max-w-fit' onClick={() => handlePressOption(index)}>
                 / {option}
               </p>
             ))}
