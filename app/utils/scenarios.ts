@@ -22,8 +22,42 @@ import case9 from '../../public/case9.webp';
 import case10 from '../../public/case10.webp';
 import case11 from '../../public/case11.webp';
 
-
 import { StaticImageData } from 'next/image';
+
+export const scenarioValues = {
+	compassion: {
+			title: 'Humanitario',
+			description: 'Pones el bienestar de los demás antes que el tuyo, siempre mostrando empatía y comprensión hacia las dificultades de los demás.'
+	},
+	justice: {
+			title: 'Defensor de la Justicia',
+			description: 'Buscas incansablemente la equidad y la justicia, luchando contra la injusticia en todas sus formas.'
+	},
+	pragmatism: {
+			title: 'Realista Pragmático',
+			description: 'Enfocas las situaciones de manera práctica y efectiva, buscando soluciones realistas y funcionales.'
+	},
+	honor: {
+			title: 'Persona Honorable',
+			description: 'Vives según un código de ética estricto, siempre actuando con dignidad y respeto.'
+	},
+	integrity: {
+			title: 'Individuo Íntegro',
+			description: 'Demuestras honestidad y firmeza moral en todas tus acciones, siendo un modelo a seguir en cuanto a ética.'
+	},
+	fairness: {
+			title: 'Justiciero',
+			description: 'Luchas por lo justo y equitativo, asegurándote de que todos reciban un trato justo y se respeten sus derechos.'
+	},
+	survival: {
+			title: 'Superviviente Astuto',
+			description: 'Eres excepcionalmente hábil en adaptarte y sobrevivir en cualquier entorno o situación, no importa cuán difícil sea.'
+	},
+	altruism: {
+			title: 'Altruista Abnegado',
+			description: 'Pones las necesidades de los demás antes que las tuyas, dedicando tu vida a ayudar a los demás sin buscar recompensa.'
+	}
+};
 
 export const englishToSpanishMap = {
   compassion: 'Compasión',
@@ -113,9 +147,9 @@ export const scenarios: Scenario[] = [
       500,
       '> Finalmente la comunidad científica descubre la cura para todas las enfermedades.\n\n > Sin embargo, para poder proporcionarla al mundo es necesario el sacrificio de una persona.',
       500,
-      '> Finalmente la comunidad científica descubre la cura para todas las enfermedades.\n\n > Sin embargo, para poder proporcionarla al mundo es necesario el sacrificio de una persona.\n\n > Puede ser cualquieria, pero la decisión la tienes tú.',
+      '> Finalmente la comunidad científica descubre la cura para todas las enfermedades.\n\n > Sin embargo, para poder proporcionarla al mundo es necesario el sacrificio de una persona.\n\n > Puede ser cualquiera, pero la decisión la tienes tú.',
       500,
-      '> Finalmente la comunidad científica descubre la cura para todas las enfermedades.\n\n > Sin embargo, para poder proporcionarla al mundo es necesario el sacrificio de una persona.\n\n > Puede ser cualquieria, pero la decisión la tienes tú.\n\n ? ¿Qué haces?',
+      '> Finalmente la comunidad científica descubre la cura para todas las enfermedades.\n\n > Sin embargo, para poder proporcionarla al mundo es necesario el sacrificio de una persona.\n\n > Puede ser cualquiera, pero la decisión la tienes tú.\n\n ? ¿Qué haces?',
     ],
     image: case6,
     options: ['Sacrificar a alguien más', 'Sacrificarte tú', 'No sacrificar a nadie'],
